@@ -32,7 +32,8 @@
     "jshint-stylish": "~2.2.1",
     "load-grunt-tasks": "~5.1.0",
     "node-sass": "^9.0.0",
-    "postcss": "^8.4.38"
+    "postcss": "^8.4.38",
+    "sass": "^1.88.0"
   },
   "scripts": {
     "build": "grunt build",
