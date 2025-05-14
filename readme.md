@@ -18,7 +18,3 @@ Experimental mini-extension for [WooCommerce Mix and Match Products](https://woo
 2. Please test thoroughly before using in production.
 3. Requires Mix and Match 2.4.0+
 4. No pro-rated payments are collected, and no switch orders are recorded.
-
-### Automatic plugin updates
-
-Plugin updates can be enabled by installing the [Git Updater](https://git-updater.com/) plugin.

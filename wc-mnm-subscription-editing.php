@@ -16,14 +16,22 @@
  * Requires at least: 6.1.0
  * Requires PHP: 8.0
  * 
- * GitHub Plugin URI: https://github.com/kathyisawesome/wc-mnm-subscription-editing
- * Primary Branch: trunk
- * Release Asset: true
+ * Update URI: https://www.backcourt.io/
  *
  * Copyright: © 2022 Kathy Darling
  * License: GNU General Public License v3.0
  * License URI: http://www.gnu.org/licenses/gpl-3.0.html
  */
+
+use \Backcourt\MNMSubEditing\Vendor\Fragen;
+
+/**
+ * Add Git Updater Lite
+ */
+if ( file_exists( __DIR__ . '/packages/autoload.php' ) ) {
+	require_once __DIR__ . '/packages/autoload.php';
+	( new Fragen\Git_Updater\Lite( __FILE__ ) )->run();
+}
 
 /**
  * Declare Core WooCommerce features compatibility.

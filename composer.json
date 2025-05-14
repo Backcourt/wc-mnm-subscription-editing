@@ -3,6 +3,37 @@
     "description": "Mix and Match subscription contents in-place editing, no cart/checkout.",
     "homepage": "https://github.com/kathyisawesome/wc-mnm-subscription-editing",
     "type": "wordpress-plugin",
-    "license": "GPL-3.0-or-later"
+    "license": "GPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "helgatheviking",
+            "email": "507025+helgatheviking@users.noreply.github.com"
+        }
+    ],
+    "require": {
+        "afragen/git-updater-lite": "^2"
+    },
+    "require-dev": {
+        "brianhenryie/strauss": "^0.22.2"
+    },
+    "scripts": {
+        "prefix-namespaces": [
+            "strauss",
+            "@php composer dump-autoload"
+        ],
+        "post-install-cmd": [
+            "@prefix-namespaces"
+        ],
+        "post-update-cmd": [
+            "@prefix-namespaces"
+        ]
+    },
+    "extra": {
+        "strauss": {
+            "target_directory": "packages",
+            "namespace_prefix": "Backcourt\\MNMSubEditing\\Vendor",
+            "classmap_prefix": "Backcourt_MNM_Sub_Editing_Vendor_",
+            "constant_prefix": "BCMNMSE_"
+        }
+    }
 }
-  
