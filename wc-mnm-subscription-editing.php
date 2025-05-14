@@ -187,6 +187,8 @@ if ( ! class_exists( 'WC_MNM_Subscription_Editing' ) ) :
 				.wc-mnm-edit-container-shop_subscription .mnm_form .product-thumbnail a,
 				.wc-mnm-edit-container-shop_subscription .mnm_form .product-details a {
 					cursor: default;
+					text-decoration: none;
+					color: initial;
 				}
 				.wc-mnm-edit-container-shop_subscription .mnm_form .product-thumbnail a:active,
 				.wc-mnm-edit-container-shop_subscription .mnm_form .product-thumbnail a:focus {
@@ -417,6 +419,9 @@ if ( ! class_exists( 'WC_MNM_Subscription_Editing' ) ) :
 
 				// Change button texts and validation context.
 				add_filter( 'wc_mnm_edit_container_button_text', [ __CLASS__, 'update_container_text' ] );
+				// Set child items to hidden catalog visibility.
+				add_filter( 'wc_mnm_child_item_product', [ __CLASS__, 'modify_child_item_product' ] );
+				add_filter( 'wc_mnm_child_item_store_api_response', [ __CLASS__, 'modify_child_item_product_response' ] );
 
 			}
 			
@@ -430,6 +435,32 @@ if ( ! class_exists( 'WC_MNM_Subscription_Editing' ) ) :
 		 */
 		public static function update_container_text( $text = '' ) {
 			return esc_html__( 'Update subscription', 'wc-mnm-subscription-editing' );
+		}
+
+		/**
+		 * Remove peramlinks by setting catalog visibility to hidden when part of container
+		 *
+		 * @since 1.0.2
+		 *
+		 * @param obj WC_Product $product the child item's product object
+		 */
+		public static function modify_child_item_product( $product ) {
+			$product->set_catalog_visibility( 'hidden' );
+			return $product;
+		}
+
+		/**
+		 * Force Remove permalinks for variable products.
+		 * Not currently sure why the above filter isn't working, but it doesn't seem to effect the Store API reponse. SO manually fixing it here.
+		 * 
+		 * @since 1.0.2
+		 *
+		 * @param array $response
+		 * @return array
+		 */
+		public static function modify_child_item_product_response( $reponse ) {
+			$response['catalog_visibility'] = 'hidden';
+			return $reponse;
 		}
 
 		/*-----------------------------------------------------------------------------------*/
