@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin URI: http://www.github.com/kathyisawesome/wc-mnm-subscription-editing
- * Plugin Name: WooCommerce Mix and Match - Subscription Editing
+ * Plugin Name: WC Mix and Match - Subscription Editing
  * Version: 1.1.0
  * Description: Mix and Match subscription container contents editing in the my account area, no cart/checkout
  * Author: Kathy Darling
@@ -83,11 +83,11 @@ if ( ! class_exists( 'WC_MNM_Subscription_Editing' ) ) :
 
 			// MNM check.
 			if ( ! function_exists( 'wc_mix_and_match' ) || version_compare( wc_mix_and_match()->version, self::REQ_MNM_VERSION ) < 0 ) {
-				self::$notice = __( 'WooCommerce Mix and Match Subscription Editing requires at least WooCommerce Mix and Match Products version <strong>%1$s</strong>. %2$s', 'wc-mnm-subscription-editing' );
+				self::$notice = __( 'WC Mix and Match Subscription Editing requires at least Mix and Match Products for WooCommerce version <strong>%1$s</strong>. %2$s', 'wc-mnm-subscription-editing' );
 				if ( ! function_exists( 'wc_mix_and_match' ) ) {
-					self::$notice = sprintf( self::$notice, self::REQ_MNM_VERSION, __( 'Please install and activate WooCommerce Mix and Match Products.', 'wc-mnm-subscription-editing' ) );
+					self::$notice = sprintf( self::$notice, self::REQ_MNM_VERSION, __( 'Please install and activate Mix and Match Products for WooCommerce.', 'wc-mnm-subscription-editing' ) );
 				} else {
-					self::$notice = sprintf( self::$notice, self::REQ_MNM_VERSION, __( 'Please update WooCommerce Mix and Match Products.', 'wc-mnm-subscription-editing' ) );
+					self::$notice = sprintf( self::$notice, self::REQ_MNM_VERSION, __( 'Please update Mix and Match Products for WooCommerce.', 'wc-mnm-subscription-editing' ) );
 				}
 
 				add_action( 'admin_notices', [ __CLASS__, 'admin_notice' ] );
@@ -96,14 +96,14 @@ if ( ! class_exists( 'WC_MNM_Subscription_Editing' ) ) :
 
 			// Sub check.
 			if ( ! class_exists( 'WC_Subscriptions_Plugin' )  ) {
-				self::$notice = __( 'WooCommerce Mix and Match Subscription Editing requires WooCommerce Subscriptions. Please install and activate WooCommerce Subscriptions', 'wc-mnm-subscription-editing' );
+				self::$notice = __( 'WC Mix and Match Subscription Editing requires WooCommerce Subscriptions. Please install and activate WooCommerce Subscriptions', 'wc-mnm-subscription-editing' );
 				add_action( 'admin_notices', [ __CLASS__, 'admin_notice' ] );
 				return false;
 			}	
 
 			// APFS check.
 			if ( ! defined( 'WCS_ATT_VERSION' )  ) {
-				self::$notice = __( 'WooCommerce Mix and Match Subscription Editing requires WooCommerce All Products for Subscriptions. Please install and activate WooCommerce All Products for Subscriptions', 'wc-mnm-subscription-editing' );
+				self::$notice = __( 'WC Mix and Match Subscription Editing requires WooCommerce All Products for Subscriptions. Please install and activate WooCommerce All Products for Subscriptions', 'wc-mnm-subscription-editing' );
 				add_action( 'admin_notices', [ __CLASS__, 'admin_notice' ] );
 				return false;
 			}		

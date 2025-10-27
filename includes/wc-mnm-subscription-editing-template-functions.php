@@ -4,8 +4,8 @@
  *
  * Functions for the templating system.
  *
- * @package  WooCommerce Mix and Match Subscription Editing\Functions
  * @version  1.0.0
+ * @package WC Mix and Match Subscription Editing\Functions
  */
 
 defined( 'ABSPATH' ) || exit;
