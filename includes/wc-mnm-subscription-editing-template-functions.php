@@ -4,8 +4,9 @@
  *
  * Functions for the templating system.
  *
- * @version  1.0.0
  * @package WC Mix and Match Subscription Editing\Functions
+ * @since   1.0.0
+ * @version 1.2.0
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -76,7 +77,7 @@ if ( ! function_exists( 'wc_mnm_template_edit_cancel_link' ) ) {
 				'</span>'
 			);
 			echo '<div class="wc-mnm-edit-subscription-actions woocommerce-cart-form">
-					<button class="button alt wc-mnm-cancel-edit' . esc_attr( WC_MNM_Core_Compatibility::wp_theme_get_element_class_name( 'button' ) ) .' wc-block-components-button outlined"> ' . wp_kses_post( $cancel_text ) . '</button>
+					<button class="button alt wc-mnm-cancel-edit' . esc_attr( wp_theme_get_element_class_name( 'button' ) ) .' wc-block-components-button outlined"> ' . wp_kses_post( $cancel_text ) . '</button>
 				</div>';
 		}
 	}
