@@ -15,7 +15,7 @@
   "author": "helgatheviking",
   "devDependencies": {
     "@lodder/grunt-postcss": "^3.1.1",
-    "autoprefixer": "^10.4.19",
+    "autoprefixer": "^10.4.21",
     "grunt": "~1.6.1",
     "grunt-contrib-clean": "^2.0.1",
     "grunt-contrib-compress": "^2.0.0",
@@ -28,12 +28,12 @@
     "grunt-rtlcss": "^2.0.2",
     "grunt-sass": "^3.1.0",
     "grunt-text-replace": "^0.4.0",
-    "grunt-wp-i18n": "~1.0.3",
+    "grunt-wp-i18n": "~1.0.4",
     "jshint-stylish": "~2.2.1",
     "load-grunt-tasks": "~5.1.0",
     "node-sass": "^9.0.0",
-    "postcss": "^8.4.38",
-    "sass": "^1.88.0"
+    "postcss": "^8.5.6",
+    "sass": "^1.93.2"
   },
   "scripts": {
     "build": "grunt build",
