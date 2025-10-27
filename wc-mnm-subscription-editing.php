@@ -276,7 +276,7 @@ if ( ! class_exists( 'WC_MNM_Subscription_Editing' ) ) :
 				}
 
 				// Stash any VMNM products for preloading Store API responses in footer.
-				$preloads = \WC_MNM_Cache::get( 'wcMNMVariablePreloads' );
+				$preloads = \WC_MNM_Helpers::cache_get( 'wcMNMVariablePreloads' );
 
 				if ( $order_item->get_variation_id() ) { 
 					if ( is_array( $preloads ) ) {
@@ -286,7 +286,7 @@ if ( ! class_exists( 'WC_MNM_Subscription_Editing' ) ) :
 					}
 				}	
 
-				\WC_MNM_Cache::set( 'wcMNMVariablePreloads', $preloads );
+				\WC_MNM_Helpers::cache_set( 'wcMNMVariablePreloads', $preloads );
 
 			}	
 
