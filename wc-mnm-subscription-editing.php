@@ -16,7 +16,7 @@
  * Requires at least: 6.1.0
  * Requires PHP: 8.0
  * 
- * Update URI: https://www.backcourt.io/
+ * Update URI: https://www.backcourt.io
  *
  * Copyright: © 2022 Kathy Darling
  * License: GNU General Public License v3.0
