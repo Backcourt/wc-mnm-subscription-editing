@@ -83,11 +83,10 @@ if ( ! class_exists( 'WC_MNM_Subscription_Editing' ) ) :
 
 			// MNM check.
 			if ( ! function_exists( 'wc_mix_and_match' ) || version_compare( wc_mix_and_match()->version, self::REQ_MNM_VERSION ) < 0 ) {
-				self::$notice = __( 'WC Mix and Match Subscription Editing requires at least Mix and Match Products for WooCommerce version <strong>%1$s</strong>. %2$s', 'wc-mnm-subscription-editing' );
 				if ( ! function_exists( 'wc_mix_and_match' ) ) {
-					self::$notice = sprintf( self::$notice, self::REQ_MNM_VERSION, __( 'Please install and activate Mix and Match Products for WooCommerce.', 'wc-mnm-subscription-editing' ) );
+					self::$notice = 'activate_mix_and_match';
 				} else {
-					self::$notice = sprintf( self::$notice, self::REQ_MNM_VERSION, __( 'Please update Mix and Match Products for WooCommerce.', 'wc-mnm-subscription-editing' ) );
+					self::$notice = 'update_mix_and_match';
 				}
 
 				add_action( 'admin_notices', [ __CLASS__, 'admin_notice' ] );
@@ -96,14 +95,14 @@ if ( ! class_exists( 'WC_MNM_Subscription_Editing' ) ) :
 
 			// Sub check.
 			if ( ! class_exists( 'WC_Subscriptions_Plugin' )  ) {
-				self::$notice = __( 'WC Mix and Match Subscription Editing requires WooCommerce Subscriptions. Please install and activate WooCommerce Subscriptions', 'wc-mnm-subscription-editing' );
+				self::$notice = 'activate_subscriptions';
 				add_action( 'admin_notices', [ __CLASS__, 'admin_notice' ] );
 				return false;
 			}	
 
 			// APFS check.
 			if ( ! defined( 'WCS_ATT_VERSION' )  ) {
-				self::$notice = __( 'WC Mix and Match Subscription Editing requires WooCommerce All Products for Subscriptions. Please install and activate WooCommerce All Products for Subscriptions', 'wc-mnm-subscription-editing' );
+				self::$notice = 'activate_apfs';
 				add_action( 'admin_notices', [ __CLASS__, 'admin_notice' ] );
 				return false;
 			}		
@@ -156,8 +155,42 @@ if ( ! class_exists( 'WC_MNM_Subscription_Editing' ) ) :
 		 * Users must update Mix and Match
 		 */
 		public static function admin_notice() {
+
+			// translators: %1$s is required version number, %2$s is additional prompt.
+			$mnm_message = esc_html__( 'WC Mix and Match Subscription Editing requires at least Mix and Match Products for WooCommerce version %1$s. %2$s', 'wc-mnm-subscription-editing' );
+
+			switch ( self::$notice ) {
+				case 'activate_mix_and_match':
+					$message = sprintf(
+						$mnm_message,
+						self::REQ_MNM_VERSION,
+						esc_html__( 'Please install and activate Mix and Match Products for WooCommerce.', 'wc-mnm-subscription-editing' )
+					);
+					break;
+				case 'update_mix_and_match':
+					$message = sprintf(
+						$mnm_message,
+						self::REQ_MNM_VERSION,
+						esc_html__( 'Please update Mix and Match Products for WooCommerce.', 'wc-mnm-subscription-editing' )
+					);
+					break;
+				case 'activate_subscriptions':
+					$message = esc_html__( 'WC Mix and Match Subscription Editing requires WooCommerce Subscriptions. Please install and activate WooCommerce Subscriptions', 'wc-mnm-subscription-editing' );
+					break;
+				case 'activate_apfs':
+					$message = esc_html__( 'WC Mix and Match Subscription Editing requires WooCommerce All Products for Subscriptions. Please install and activate WooCommerce All Products for Subscriptions', 'wc-mnm-subscription-editing' );
+					break;
+				default:
+					$message = '';
+					break;
+			}
+			
+			if ( empty( $message ) ) {
+				return;
+			}
+
 			echo '<div class="notice notice-error">';
-				echo wpautop( self::$notice );
+				echo wpautop( $message );
 			echo '</div>';
 		}
 
