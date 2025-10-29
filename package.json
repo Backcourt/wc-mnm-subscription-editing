@@ -1,7 +1,7 @@
 {
   "title": "WC Mix and Match Products - Subscription Editing",
   "name": "wc-mnm-subscription-editing",
-  "version": "1.2.0-beta.1",
+  "version": "1.2.0-beta.2",
   "description": "Mix and Match subscription contents editing in My Account area, no cart/checkout",
   "main": "Gruntfile.js",
   "license": "GPL-3.0",
