@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin URI: http://www.github.com/kathyisawesome/wc-mnm-subscription-editing
- * Plugin Name: WooCommerce Mix and Match - Subscription Editing
- * Version: 1.1.0
+ * Plugin Name: WC Mix and Match - Subscription Editing
+ * Version: 1.2.0-beta.1
  * Description: Mix and Match subscription container contents editing in the my account area, no cart/checkout
  * Author: Kathy Darling
  * Author URI: http://kathyisawesome.com/
@@ -16,7 +16,7 @@
  * Requires at least: 6.1.0
  * Requires PHP: 8.0
  * 
- * Update URI: https://www.backcourt.io/
+ * Update URI: https://www.backcourt.io
  *
  * Copyright: © 2022 Kathy Darling
  * License: GNU General Public License v3.0
@@ -60,8 +60,8 @@ if ( ! class_exists( 'WC_MNM_Subscription_Editing' ) ) :
 		/**
 		 * constants
 		 */
-		const VERSION = '1.1.0';
-		const REQ_MNM_VERSION = '2.7.0';
+		const VERSION = '1.2.0-beta.1';
+		const REQ_MNM_VERSION = '2.8.0';
 
 		/**
 		 * var string $notice
@@ -83,11 +83,10 @@ if ( ! class_exists( 'WC_MNM_Subscription_Editing' ) ) :
 
 			// MNM check.
 			if ( ! function_exists( 'wc_mix_and_match' ) || version_compare( wc_mix_and_match()->version, self::REQ_MNM_VERSION ) < 0 ) {
-				self::$notice = __( 'WooCommerce Mix and Match Subscription Editing requires at least WooCommerce Mix and Match Products version <strong>%1$s</strong>. %2$s', 'wc-mnm-subscription-editing' );
 				if ( ! function_exists( 'wc_mix_and_match' ) ) {
-					self::$notice = sprintf( self::$notice, self::REQ_MNM_VERSION, __( 'Please install and activate WooCommerce Mix and Match Products.', 'wc-mnm-subscription-editing' ) );
+					self::$notice = 'activate_mix_and_match';
 				} else {
-					self::$notice = sprintf( self::$notice, self::REQ_MNM_VERSION, __( 'Please update WooCommerce Mix and Match Products.', 'wc-mnm-subscription-editing' ) );
+					self::$notice = 'update_mix_and_match';
 				}
 
 				add_action( 'admin_notices', [ __CLASS__, 'admin_notice' ] );
@@ -96,14 +95,14 @@ if ( ! class_exists( 'WC_MNM_Subscription_Editing' ) ) :
 
 			// Sub check.
 			if ( ! class_exists( 'WC_Subscriptions_Plugin' )  ) {
-				self::$notice = __( 'WooCommerce Mix and Match Subscription Editing requires WooCommerce Subscriptions. Please install and activate WooCommerce Subscriptions', 'wc-mnm-subscription-editing' );
+				self::$notice = 'activate_subscriptions';
 				add_action( 'admin_notices', [ __CLASS__, 'admin_notice' ] );
 				return false;
 			}	
 
 			// APFS check.
 			if ( ! defined( 'WCS_ATT_VERSION' )  ) {
-				self::$notice = __( 'WooCommerce Mix and Match Subscription Editing requires WooCommerce All Products for Subscriptions. Please install and activate WooCommerce All Products for Subscriptions', 'wc-mnm-subscription-editing' );
+				self::$notice = 'activate_apfs';
 				add_action( 'admin_notices', [ __CLASS__, 'admin_notice' ] );
 				return false;
 			}		
@@ -127,7 +126,7 @@ if ( ! class_exists( 'WC_MNM_Subscription_Editing' ) ) :
 			add_filter( 'wc_mnm_updated_container_in_shop_subscription_fragments', [ __CLASS__, 'updated_subscription_fragments' ], 10, 4 );
 
 			// Frontend display.
-			if ( version_compare( WC_Subscriptions::$version, '4.5.0', '>=' ) ) {
+			if ( version_compare( \WC_Subscriptions::$version, '4.5.0', '>=' ) ) {
 				add_filter( 'woocommerce_subscriptions_switch_link_classes', [ __CLASS__, 'switch_link_classes' ], 10, 4 );
 			} else {
 				add_filter( 'woocommerce_subscriptions_switch_link', [ __CLASS__, 'switch_link' ], 99, 4 );
@@ -156,8 +155,42 @@ if ( ! class_exists( 'WC_MNM_Subscription_Editing' ) ) :
 		 * Users must update Mix and Match
 		 */
 		public static function admin_notice() {
+
+			// translators: %1$s is required version number, %2$s is additional prompt.
+			$mnm_message = esc_html__( 'WC Mix and Match Subscription Editing requires at least Mix and Match Products for WooCommerce version %1$s. %2$s', 'wc-mnm-subscription-editing' );
+
+			switch ( self::$notice ) {
+				case 'activate_mix_and_match':
+					$message = sprintf(
+						$mnm_message,
+						self::REQ_MNM_VERSION,
+						esc_html__( 'Please install and activate Mix and Match Products for WooCommerce.', 'wc-mnm-subscription-editing' )
+					);
+					break;
+				case 'update_mix_and_match':
+					$message = sprintf(
+						$mnm_message,
+						self::REQ_MNM_VERSION,
+						esc_html__( 'Please update Mix and Match Products for WooCommerce.', 'wc-mnm-subscription-editing' )
+					);
+					break;
+				case 'activate_subscriptions':
+					$message = esc_html__( 'WC Mix and Match Subscription Editing requires WooCommerce Subscriptions. Please install and activate WooCommerce Subscriptions', 'wc-mnm-subscription-editing' );
+					break;
+				case 'activate_apfs':
+					$message = esc_html__( 'WC Mix and Match Subscription Editing requires WooCommerce All Products for Subscriptions. Please install and activate WooCommerce All Products for Subscriptions', 'wc-mnm-subscription-editing' );
+					break;
+				default:
+					$message = '';
+					break;
+			}
+			
+			if ( empty( $message ) ) {
+				return;
+			}
+
 			echo '<div class="notice notice-error">';
-				echo wpautop( self::$notice );
+				echo wpautop( $message );
 			echo '</div>';
 		}
 
@@ -261,7 +294,7 @@ if ( ! class_exists( 'WC_MNM_Subscription_Editing' ) ) :
 
 				if ( ! self::$is_enqueued ) {
 
-					WC_MNM_Ajax::load_edit_scripts();
+					\WC_MNM_Ajax::load_edit_scripts();
 		
 					if ( class_exists( 'WC_MNM_Variable' ) ) {
 						WC_MNM_Variable::get_instance()->load_scripts();
@@ -276,7 +309,7 @@ if ( ! class_exists( 'WC_MNM_Subscription_Editing' ) ) :
 				}
 
 				// Stash any VMNM products for preloading Store API responses in footer.
-				$preloads = WC_MNM_Helpers::cache_get( 'wcMNMVariablePreloads' );
+				$preloads = \WC_MNM_Helpers::cache_get( 'wcMNMVariablePreloads' );
 
 				if ( $order_item->get_variation_id() ) { 
 					if ( is_array( $preloads ) ) {
@@ -286,7 +319,7 @@ if ( ! class_exists( 'WC_MNM_Subscription_Editing' ) ) :
 					}
 				}	
 
-				WC_MNM_Helpers::cache_set( 'wcMNMVariablePreloads', $preloads );
+				\WC_MNM_Helpers::cache_set( 'wcMNMVariablePreloads', $preloads );
 
 			}	
 
@@ -308,7 +341,7 @@ if ( ! class_exists( 'WC_MNM_Subscription_Editing' ) ) :
 		 */
 		public static function add_order_note( $container_item, $old_container_item, $subscription, $source ) {
 
-			if ( $subscription instanceof WC_Subscription && 'myaccount' === $source ) {
+			if ( $subscription instanceof \WC_Subscription && 'myaccount' === $source ) {
 
 				if ( $container_item->get_variation_id() !== $old_container_item->get_variation_id() ) {
 					$subscription->add_order_note( sprintf( esc_html__( 'Customer switched variation subscription from "%1$s" to "%2$s" via the My Account page.', 'wc-mnm-subscription-editing' ), $old_container_item->get_name(), $container_item->get_name() ) );
@@ -332,14 +365,14 @@ if ( ! class_exists( 'WC_MNM_Subscription_Editing' ) ) :
 		 */
 		public static function updated_subscription_fragments( $fragments, $container_item, $subscription, $context ) {
 
-			if ( $subscription instanceof WC_Subscription && 'myaccount' === $context ) {
+			if ( $subscription instanceof \WC_Subscription && 'myaccount' === $context ) {
 				// Get new order items fragment.
 				ob_start();
 
 				$include_item_removal_links = wcs_can_items_be_removed( $subscription );
 				$totals                     = $subscription->get_order_item_totals();
 
-				WCS_Template_Loader::get_subscription_totals_table_template( $subscription, $include_item_removal_links, $totals );
+				\WCS_Template_Loader::get_subscription_totals_table_template( $subscription, $include_item_removal_links, $totals );
 				$fragments[ 'table.order_details' ] = ob_get_clean();
 			}
 
@@ -374,7 +407,7 @@ if ( ! class_exists( 'WC_MNM_Subscription_Editing' ) ) :
 			$product = $switch_item->get_product();
 
 			if ( wc_mnm_is_product_container_type( $product ) ) {
-				$apportion_recurring_price = get_option( WC_Subscriptions_Admin::$option_prefix . '_apportion_recurring_price', 'no' );
+				$apportion_recurring_price = get_option( \WC_Subscriptions_Admin::$option_prefix . '_apportion_recurring_price', 'no' );
 
 				$prorate_virtual = in_array( $apportion_recurring_price, array( 'virtual', 'virtual-upgrade' ) );
 		
@@ -400,7 +433,7 @@ if ( ! class_exists( 'WC_MNM_Subscription_Editing' ) ) :
 			$product = $switch_item->get_product();
 
 			if ( wc_mnm_is_product_container_type( $product ) ) {
-				$apportion_recurring_price = get_option( WC_Subscriptions_Admin::$option_prefix . '_apportion_recurring_price', 'no' );
+				$apportion_recurring_price = get_option( \WC_Subscriptions_Admin::$option_prefix . '_apportion_recurring_price', 'no' );
 
 				$prorate_virtual = in_array( $apportion_recurring_price, array( 'virtual', 'virtual-upgrade' ) );
 		
@@ -486,14 +519,14 @@ if ( ! class_exists( 'WC_MNM_Subscription_Editing' ) ) :
 		 */
 		public static function reapply_schemes( $product, $order_item, $order, $source ) {
 
-			$scheme_key = $scheme_key = WCS_ATT_Order::get_subscription_scheme( $order_item, array(
+			$scheme_key = $scheme_key = \WCS_ATT_Order::get_subscription_scheme( $order_item, array(
 				'product'   => $product,
 				'order'     => $order,
 			) );
 
 			// Set scheme on product object for later reference.
 			if ( null !== $scheme_key ) {
-				WCS_ATT_Product_Schemes::set_subscription_scheme( $product, $scheme_key );
+				\WCS_ATT_Product_Schemes::set_subscription_scheme( $product, $scheme_key );
 			}
 
 			return $product;
@@ -513,14 +546,14 @@ if ( ! class_exists( 'WC_MNM_Subscription_Editing' ) ) :
 
 				if ( isset( $_POST['extra_data'] ) && isset( $_POST['extra_data']['order_item_id' ] ) ) {
 					
-					$order_item = new WC_Order_Item_Product( intval( $_POST['extra_data']['order_item_id' ] ) );
+					$order_item = new \WC_Order_Item_Product( intval( $_POST['extra_data']['order_item_id' ] ) );
 
-					$scheme_key = WCS_ATT_Order::get_subscription_scheme( $order_item, array(
+					$scheme_key = \WCS_ATT_Order::get_subscription_scheme( $order_item, array(
 						'product'   => $product,
 					) );
 
 					if ( null !== $scheme_key ) {
-						WCS_ATT_Product_Schemes::set_subscription_scheme( $product, $scheme_key );
+						\WCS_ATT_Product_Schemes::set_subscription_scheme( $product, $scheme_key );
 					}
 
 				}
