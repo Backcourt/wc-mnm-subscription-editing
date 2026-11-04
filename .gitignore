@@ -1,9 +1,21 @@
-node_modules/
-build/
-deploy/
-package-lock.json
-assets/js/frontend/*.min.js
-assets/js/backend/*.min.js
+# Grunt
+/node_modules/
+/build/
+/deploy/
+
+# Compiled assets
+assets/js/**/*.min.js
 languages/
+
+# Editor
 .vscode/
+
+# Composer
+/vendor/*
+/packages/*
+
+# Temporary files
 *.bak
+
+# BrianHenryIE/Strauss - PHP Namespace Renamer
+bin/strauss.phar
