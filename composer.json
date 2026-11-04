@@ -15,7 +15,7 @@
         "issues": "https://github.com/backcourt/wc-mnm-subscription-editing/issues"
     },
     "require": {
-        "afragen/git-updater-lite": "^2"
+        "afragen/git-updater-lite": "^3"
     },
     "require-dev": {
         "wp-cli/i18n-command": "^2.6"
