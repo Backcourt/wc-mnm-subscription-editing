@@ -7,10 +7,10 @@
   "license": "GPL-3.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/kathyisawesome/wc-mnm-subscription-editing"
+    "url": "https://github.com/Backcourt/wc-mnm-subscription-editing"
   },
   "bugs": {
-    "url": "https://github.com/kathyisawesome/wc-mnm-subscription-editing/issues"
+    "url": "https://github.com/Backcourt/wc-mnm-subscription-editing/issues"
   },
   "author": "helgatheviking",
   "devDependencies": {

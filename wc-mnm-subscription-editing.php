@@ -1,13 +1,13 @@
 <?php
 /**
- * Plugin URI: http://www.github.com/kathyisawesome/wc-mnm-subscription-editing
+ * Plugin URI: http://www.github.com/Backcourt/wc-mnm-subscription-editing
  * Plugin Name: WC Mix and Match - Subscription Editing
  * Version: 1.2.0
  * Description: Mix and Match subscription container contents editing in the my account area, no cart/checkout
- * Author: Kathy Darling
- * Author URI: http://kathyisawesome.com/
- * Developer: Kathy Darling
- * Developer URI: http://kathyisawesome.com/
+ * Author: Backcourt Development
+ * Author URI: https://www.backcourt.io/
+ * Developer: Backcourt Development
+ * Developer URI: https://www.backcourt.io/
  * Text Domain: wc-mnm-subscription-editing
  * Domain Path: /languages
  * 
@@ -18,7 +18,7 @@
  * 
  * Update URI: https://www.backcourt.io
  *
- * Copyright: © 2022 Kathy Darling
+ * Copyright: © 2022 Backcourt Development
  * License: GNU General Public License v3.0
  * License URI: http://www.gnu.org/licenses/gpl-3.0.html
  */
