@@ -89,6 +89,7 @@ module.exports = function ( grunt ) {
 					'!vendor/**',
 					'!none',
 					'!bin/**',
+					'!.nvmrc'
 				],
 				dest: 'build/',
 			},
